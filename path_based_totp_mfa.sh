@@ -19,19 +19,19 @@ vault write sys/mfa/method/totp/my_totp \
 
 vault policy write totp-policy -<<EOF
 #Support both v1 and v2 paths
-path "secret/${SECRET_KEY}" {
+path "secret_new/${SECRET_KEY}" {
 capabilities = ["read"]
 mfa_methods  = ["my_totp"]
 }
-path "secret/data/${SECRET_KEY}" {
+path "secret_new/data/${SECRET_KEY}" {
 capabilities = ["read"]
 mfa_methods  = ["my_totp"]
 }
 EOF
 
-vault secrets enable -path=secret kv
+vault secrets enable -path=secret_new kv
 
-vault kv put secret/${SECRET_KEY} password=${SECRET_VALUE}
+vault kv put secret_new/${SECRET_KEY} password=${SECRET_VALUE}
 
 vault write auth/userpass/users/${TEST_USER} password=${TEST_PASSWORD} policies=totp-policy
 
@@ -50,5 +50,5 @@ echo "Run the following commands to login and test"
 cat <<EOF
 unset VAULT_TOKEN
 vault login -method=userpass username=${TEST_USER} password=${TEST_PASSWORD}
-vault kv get -mfa=my_totp:${CODE} secret/${SECRET_KEY}
+vault kv get -mfa=my_totp:${CODE} secret_new/${SECRET_KEY}
 EOF
