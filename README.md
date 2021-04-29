@@ -1,4 +1,4 @@
-# MFA on Vault using TOTP and the Microsoft Authenticator App
+# How to Set Up MFA on Vault using TOTP and the Microsoft Authenticator App
 This repo contains examples for how to setup MFA in Vault for both LDAP Authentication and path-based CRUD Operations using TOTP and the Microsoft Authenticator App.
 
 ## LDAP AUTH MFA
