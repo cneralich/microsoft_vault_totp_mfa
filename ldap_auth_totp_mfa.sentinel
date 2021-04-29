@@ -14,7 +14,7 @@ precond = rule {
 totp_valid = func() {
   valid_mfa = mfa.methods.my_totp.valid
   if !valid_mfa {
-    print("failed")
+    print("MFA Authentication failed.  Please be sure to pass the appropriate MFA CLI flag along with a valid code from your Microsoft Authenticator App using the format: -mfa=my_totp:${CODE}")
     return false
   }
   return true
