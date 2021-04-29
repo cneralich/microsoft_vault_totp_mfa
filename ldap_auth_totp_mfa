@@ -1,0 +1,25 @@
+# THIS IS A SAMPLE SENTINEL ENDPOINT GOVERNING POLICY (EGP) FOR HASHICORP VAULT
+# Note: When creating your EGP in Vault, set the trigger Path to '/auth/<path>/login/*',
+# replacing <path> with the value given to the -path argument when configuring the Auth Method.
+# For the LDAP Auth Method, if no custom <path> is configured, the default is '/auth/ldap/login/*'
+
+import "mfa"
+import "strings"
+
+precond = rule {
+  strings.has_prefix(request.path, "auth/ldap/login")
+}
+  
+# Require Ping MFA validation to succeed
+totp_valid = func() {
+  valid_mfa = mfa.methods.my_totp.valid
+  if !valid_mfa {
+    print("failed")
+    return false
+  }
+  return true
+}
+
+main = rule when precond {
+    totp_valid()
+}
